@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+#data-table tbody tr {
+    cursor: pointer; /* マウスを乗せた時に指マークにする */
+}
+
+#data-table tbody tr:hover {
+    background-color: #f0f0f0; /* ホバー時の色 */
+}
+
+#data-table tbody tr.selected {
+    background-color: #d1e7dd; /* 選択された時の色（薄い緑など） */
+    border: 2px solid #0f5132;
+}
