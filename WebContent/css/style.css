@@ -12,3 +12,7 @@
     background-color: #d1e7dd; /* 選択された時の色（薄い緑など） */
     border: 2px solid #0f5132;
 }
+
+#input-file input {
+	margin-right: 30px;
+}
