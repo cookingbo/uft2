@@ -67,7 +67,7 @@
 			const reader = new FileReader();
 			// 「読み込みが終わったら、この関数を実行してね」という予約
 			reader.onload = (e) => {
-				// 実際に読み取られたテキストデータが入る
+				// 実際に読み取られたテキストデータが入る。
 				const content = e.target.result;
 				// 画面上に文字を表示
 				displayArea.textContent = content;
