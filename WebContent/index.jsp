@@ -1,48 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="model.DataLog, java.util.List" %>
+<%
+    // サーブレット（Controller）からリクエストスコープで渡されたリストを取得
+    List<DataLog> dataLogList = (List<DataLog>) request.getAttribute("dataLogList");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>テーブル選択画面</title>
-    <link rel="stylesheet" href="css/style.css">
-<!--     <style>
-    	body { font-family: sans-serif; margin: 20px; line-height: 106;}
-    	#display-area {
-    		background: #f4f4f4;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            white-space: pre-wrap; /* 改行や空白を保持 */
-            min-height: 100px;
-    	}
-
-    </style> -->
+<meta charset="UTF-8">
+<title>テーブル選択画面</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-	<table id="data-table" border="1">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>名前</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>1</td>
-				<td>データA</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>データB</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>データC</td>
-			</tr>
-		</tbody>
-	</table>
+	<h2>DBデータ一覧</h2>
+    <p>比較したいデータを2つ選択してください。</p>
+	<%= dataLogList %>
+    <table id="data-table" border="1">
+        <thead>
+            <tr>
+                <th>登録日時</th>
+                </tr>
+        </thead>
+        <tbody>
+            <%
+            if (dataLogList != null && !dataLogList.isEmpty()) {
+                for (DataLog dataLog : dataLogList) {
+            %>
+                <tr>
+                    <td><%= dataLog.getWrDate() %></td>
+                </tr>
+            <%
+                }
+            } else {
+            %>
+                <tr>
+                    <td>データが存在しません</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
 
 	<button id="submit-btn" disabled style="margin-top: 20px;">送信する</button>
 
@@ -81,23 +80,22 @@
 
 		});
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const rows = document.querySelectorAll('#data-table tbody tr');
-        const submitBtn = document.getElementById('submit-btn');
+		document.addEventListener('DOMContentLoaded', () => {
+		    const tableBody = document.querySelector('#data-table tbody');
+		    const submitBtn = document.getElementById('submit-btn');
 
-        rows.forEach(row => {
-            row.addEventListener('click', () => {
-                // クリックされた行に 'selected' クラスがあれば消し、なければ付ける（トグル）
-                row.classList.toggle('selected');
+		    tableBody.addEventListener('click', (event) => {
+		        // クリックされた要素の親にある tr を探す
+		        const row = event.target.closest('tr');
 
-                // 現在 'selected' クラスを持っている行の数をカウント
-                const selectedCount = document.querySelectorAll('#data-table tbody tr.selected').length;
+		        // 「データが存在しません」の行やヘッダーなどは除外
+		        if (!row || row.innerText.includes("データが存在しません")) return;
 
-                // 2つ選択されている時だけボタンを活性化
-                submitBtn.disabled = (selectedCount !== 2);
-            });
-        });
-    });
+		        row.classList.toggle('selected');
+		        const selectedCount = document.querySelectorAll('#data-table tbody tr.selected').length;
+		        submitBtn.disabled = (selectedCount !== 2);
+		    });
+		});
     </script>
 </body>
 </html>
