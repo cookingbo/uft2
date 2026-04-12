@@ -24,6 +24,7 @@ public class Main extends HttpServlet {
 	    // ロジックからリストを取得
 	    GetDataLogListLogic getDataLogListLogic = new GetDataLogListLogic();
 	    List<DataLog> dataLogList = getDataLogListLogic.execute();
+	    System.out.println("取得件数:" + dataLogList.size());
 
 	    // 【重要】ここでセットした名前 "dataLogList" がJSP側と一致している必要があります
 	    request.setAttribute("dataLogList", dataLogList);
