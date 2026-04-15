@@ -21,6 +21,7 @@ public class DataLogDAO {
 	    // 2. 接続URLに IFEXISTS=TRUE をつけると、DBがない場合にエラーが出るので切り分けに便利
 	    // String JDBC_URL = "jdbc:h2:~/uft2;IFEXISTS=TRUE";
 
+
 	    Connection conn = null;
 	    List<DataLog> dataLogList = new ArrayList<>(); // ダイヤモンド演算子でスッキリ書けます
 	    try {
