@@ -17,25 +17,20 @@ public class DataLogDAO {
 	private final String DB_PASS = "";
 
 	public List<DataLog> findAll() {
-	    // 1. ドライバクラス名を確認 (H2のバージョンにより org.h2.Driver でOK)
-	    // 2. 接続URLに IFEXISTS=TRUE をつけると、DBがない場合にエラーが出るので切り分けに便利
-	    // String JDBC_URL = "jdbc:h2:~/uft2;IFEXISTS=TRUE";
-
-
 	    Connection conn = null;
 	    List<DataLog> dataLogList = new ArrayList<>(); // ダイヤモンド演算子でスッキリ書けます
 	    try {
 	        Class.forName(DRIVER_NAME);
 	        conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 
-	        // SQL実行（ここは問題ありません）
-	        String sql = "SELECT WRDATE FROM DATA_LOG ORDER BY ID DESC";
+	        // SQL実行（ここのSQLを間違えていました）
+	        String sql = "SELECT FORMATDATETIME(WRDATE, 'yyyy-MM-dd HH:mm:ss') AS WRDATE_STR FROM DATA_LOG ORDER BY WRDATE DESC";
 	        PreparedStatement pStmt = conn.prepareStatement(sql);
 	        ResultSet rs = pStmt.executeQuery();
 
 	        while(rs.next()) {
 	            // カラム名はDBの定義（大文字小文字）に合わせて取得
-	            String wrDate = rs.getString("WRDATE");
+	            String wrDate = rs.getString("WRDATE_STR");
 	            DataLog dataLog = new DataLog(wrDate);
 	            dataLogList.add(dataLog);
 	        }

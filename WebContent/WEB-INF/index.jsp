@@ -17,7 +17,6 @@
 
 	<h2>DBデータ一覧</h2>
     <p>比較したいデータを2つ選択してください。</p>
-	<%= dataLogList %>
     <table id="data-table" border="1">
         <thead>
             <tr>
@@ -43,7 +42,7 @@
         </tbody>
     </table>
 
-	<button id="submit-btn" disabled style="margin-top: 20px;">送信する</button>
+	<button type="submit" id="submit-btn" disabled style="margin-top: 20px;">送信する</button>
 
 
 	<h2>ファイルのデータを表示する</h2>

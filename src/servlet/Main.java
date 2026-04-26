@@ -21,6 +21,7 @@ public class Main extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("--- Mainサーブレットが動き出しました！ ---"); // これを追加
 	    // ロジックからリストを取得
 	    GetDataLogListLogic getDataLogListLogic = new GetDataLogListLogic();
 	    List<DataLog> dataLogList = getDataLogListLogic.execute();
@@ -30,7 +31,7 @@ public class Main extends HttpServlet {
 	    request.setAttribute("dataLogList", dataLogList);
 
 	    // フォワード先を統一します
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index.jsp");
 	    dispatcher.forward(request, response);
 	}
 
@@ -44,7 +45,7 @@ public class Main extends HttpServlet {
 
 	    // 【修正】doGetと同じ index.jsp にフォワードさせます
 	    // WEB-INF/jsp/main.jsp になっていると、そちらのJSPにリストを渡す設定が必要です
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index.jsp");
 	    dispatcher.forward(request, response);
 	}
 }
