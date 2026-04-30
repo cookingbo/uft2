@@ -49,7 +49,7 @@ public class DataLogDAO {
 		Connection conn = null;
 		try {
 			Class.forName(DRIVER_NAME);
-	        conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 
 	        String sql = "SELECT WRDATE, ALLDATA FROM DATA_LOG WHERE WRDATE = ?";
 	        PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -57,10 +57,26 @@ public class DataLogDAO {
 	        ResultSet rs = pStmt.executeQuery();
 
 	        if (rs.next()) {
-	            dataLog = new DataLog(rs.getString("WRDATE"), rs.getInt("ALLDATA"));
+	            String wrDate = rs.getString("WRDATE");
+
+	            // CLOB型を一旦 String として取得する
+	            String clobData = rs.getString("ALLDATA");
+
+	            int allData = 0;
+	            if (clobData != null && !clobData.isEmpty()) {
+	                try {
+	                    // 文字列を数値（int）に変換する
+	                    allData = Integer.parseInt(clobData.trim());
+	                } catch (NumberFormatException e) {
+	                    // ALLDATAの中身が数字以外だった場合のログ
+	                    System.out.println("数値変換エラー: WRDATE=" + wrDate + " のデータは数値ではありません。");
+	                }
+	            }
+
+	            dataLog = new DataLog(wrDate, allData);
 	        }
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			try {
 				if (conn != null)

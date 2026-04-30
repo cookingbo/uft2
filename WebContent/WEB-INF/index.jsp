@@ -45,7 +45,7 @@
 	        </tbody>
 	    </table>
 
-		<button type="submit" id="submit-btn" disabled style="margin-top: 20px;">送信する</button>
+		<button type="button" id="submit-btn" disabled style="margin-top: 20px;">送信する</button>
 	</form>
 
 	<h2>ファイルのデータを表示する</h2>
@@ -105,8 +105,8 @@
 		    	const selectedRows = document.querySelectorAll('#data-table tbody tr.selected');
 
 		    	// 選択された2つの行から日時テキストを取得してhiddenにセット
-		    	document.getElementById('hidden-date1').values = selectedRows[0].innerText.trim();
-		    	document.getElementById('hidden-date2').values = selectedRows[1].innerText.trim();
+		    	document.getElementById('hidden-date1').value = selectedRows[0].innerText.trim();
+		    	document.getElementById('hidden-date2').value = selectedRows[1].innerText.trim();
 
 		    	// フォームを送信
 		    	compareForm.submit();

@@ -48,15 +48,17 @@ public class Main extends HttpServlet {
 	    	DataLogDAO dao = new DataLogDAO();
 	    	DataLog log1 = dao.findByDate(date1);
 	    	DataLog log2 = dao.findByDate(date2);
+	    	System.out.println("受け取ったdate1: [" + date1 + "]");
+	    	System.out.println("受け取ったdate2: [" + date2 + "]");
 
 	    	if (log1 != null && log2 != null) {
 	    		// ファイル出力処理
-	    		response.setContentType("text/plain; charset=UFT-8");
+	    		response.setContentType("text/plain; charset=UTF-8");
 	    		response.setHeader("Content-Disposition", "attachment; filename=\"data_export.txt\"");
 
 	    		try(PrintWriter out = response.getWriter()) {
 	    			out.println("選択データ1: " + log1.getWrDate() + "[ALLDATA: " + log1.getAllData() + "]");
-	    			out.println("選択データ2: " + log1.getWrDate() + "[ALLDATA: " + log2.getAllData() + "]");
+	    			out.println("選択データ2: " + log2.getWrDate() + "[ALLDATA: " + log2.getAllData() + "]");
 	    		}
 	    		return;
 	    	}
