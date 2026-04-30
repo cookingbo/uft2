@@ -24,7 +24,7 @@ public class DataLogDAO {
 	        conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 
 	        // SQL実行（ここのSQLを間違えていました）
-	        String sql = "SELECT WRDATE FROM DATA_LOG ORDER BY WRDATE DESC";
+	        String sql = "SELECT WRDATE FROM DATA_LOG ORDER BY WRDATE ASC";
 	        PreparedStatement pStmt = conn.prepareStatement(sql);
 	        ResultSet rs = pStmt.executeQuery();
 

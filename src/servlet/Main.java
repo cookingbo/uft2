@@ -64,17 +64,5 @@ public class Main extends HttpServlet {
 	    	}
 	    }
 	    response.sendRedirect("Main");
-
-
-
-//	    // POST時もデータを再取得して表示させる必要があります（再表示する場合）
-//	    GetDataLogListLogic getDataLogListLogic = new GetDataLogListLogic();
-//	    List<DataLog> dataLogList = getDataLogListLogic.execute();
-//	    request.setAttribute("dataLogList", dataLogList);
-//
-//	    // 【修正】doGetと同じ index.jsp にフォワードさせます
-//	    // WEB-INF/jsp/main.jsp になっていると、そちらのJSPにリストを渡す設定が必要です
-//	    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/index.jsp");
-//	    dispatcher.forward(request, response);
 	}
 }

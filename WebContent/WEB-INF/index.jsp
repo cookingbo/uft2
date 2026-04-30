@@ -54,6 +54,8 @@
 	<h3>ファイルの内容</h3>
 	<pre id="display-area">ファイルを選択してください</pre>
 
+	<footer></footer>
+
 	<script>
 		// HTML内の特定の部品（IDがついたもの）をJavaScriptから操作できるように変数に格納しています。
 		const fileInput = document.getElementById('file-input');
