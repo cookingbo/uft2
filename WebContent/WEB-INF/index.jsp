@@ -45,19 +45,19 @@
 	        </tbody>
 	    </table>
 
-		<button type="button" id="submit-btn" disabled style="margin-top: 20px;">送信する</button>
+		<button type="button" id="submit-btn" disabled style="margin-top: 20px;">出力</button>
 	</form>
 
-	<h2>ファイルのデータを表示する</h2>
-	<input type="file" id="file-input" accept=".txt,.csv,.json">
-	<hr>
-	<h3>ファイルの内容</h3>
-	<pre id="display-area">ファイルを選択してください</pre>
+	<form action="FileRegister" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="actionType" value="upload">
+		<input type="file" name="uploadFile">
+		<button type="submit">ファイル登録</button>
+	</form>
 
-	<footer></footer>
+
 
 	<script>
-		// HTML内の特定の部品（IDがついたもの）をJavaScriptから操作できるように変数に格納しています。
+/* 		// HTML内の特定の部品（IDがついたもの）をJavaScriptから操作できるように変数に格納しています。
 		const fileInput = document.getElementById('file-input');
 		const displayArea = document.getElementById('display-area');
 
@@ -82,7 +82,7 @@
 			// readAsText は、ファイルを「テキストデータ」として読み込むよう指示
 			reader.readAsText(file);
 
-		});
+		}); */
 
 		document.addEventListener('DOMContentLoaded', () => {
 		    const tableBody = document.querySelector('#data-table tbody');
