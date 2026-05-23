@@ -11,6 +11,37 @@
 <meta charset="UTF-8">
 <title>テーブル選択画面</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+	/* --- テーブル選択用の簡易スタイル --- */
+	#data-table tbody tr { cursor: pointer; }
+	#data-table tbody tr.selected { background-color: #d1ecf1; }
+
+	/* --- ファイルアップロード用のスタイル --- */
+	/* 本物のinputを見えなくするクラス */
+	.visual-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		border: 0;
+	}
+	/* ラベル（自作ボタン）の装飾 */
+	.custom-btn {
+		display: inline-block;
+		background: #333;
+		color: #fff;
+		padding: 6px 12px;
+		border-radius: 4px;
+		cursor: pointer;
+		user-select: none;
+	}
+	.custom-btn:hover {
+		background: #555;
+	}
+</style>
 </head>
 
 <body>
@@ -45,45 +76,22 @@
 	        </tbody>
 	    </table>
 
-		<button type="button" id="submit-btn" disabled style="margin-top: 20px;">出力</button>
+		<button type="button" id="submit-btn" disabled style="margin-top: 20px;">比較出力</button>
 	</form>
 
-	<form action="FileRegister" method="post" enctype="multipart/form-data">
+	<!-- ファイルアップロード用フォーム（ボタンのみ） -->
+	<form id="upload-form"	action="FileRegister" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="actionType" value="upload">
-		<input type="file" name="uploadFile">
-		<button type="submit">ファイル登録</button>
+
+		<!-- 本物のfileインプットは隠したままにします -->
+		<input type="file" name="uploadFile" id="uploadFile" class="visual-hidden">
+
+		<!-- 修正箇所：ボタンを標準のbutton要素にし、クリック時にfileインプットを呼び出すようにします -->
+		<button type="button" onclick="document.getElementById('uploadFile').click();">ファイル登録</button>
 	</form>
-
-
 
 	<script>
-/* 		// HTML内の特定の部品（IDがついたもの）をJavaScriptから操作できるように変数に格納しています。
-		const fileInput = document.getElementById('file-input');
-		const displayArea = document.getElementById('display-area');
-
-		// ファイルが新しく選択されたり、別のファイルに変更されたりした瞬間に、中の処理（{ } で囲まれた部分）が実行されます。
-		fileInput.addEventListener('change', (event) => {
-			// 選択されたファイルのリスト
-			const file = event.target.files[0];
-			if(!file) return;
-			// 「ファイルの中身を読み取る専用の道具」を新しく用意する命令
-			const reader = new FileReader();
-			// 「読み込みが終わったら、この関数を実行してね」という予約
-			reader.onload = (e) => {
-				// 実際に読み取られたテキストデータが入る。
-				const content = e.target.result;
-				// 画面上に文字を表示
-				displayArea.textContent = content;
-			};
-
-			reader.onerror = () => {
-				alter('ファイルの読み込みに失敗しました');
-			};
-			// readAsText は、ファイルを「テキストデータ」として読み込むよう指示
-			reader.readAsText(file);
-
-		}); */
-
+	    // 日時選択
 		document.addEventListener('DOMContentLoaded', () => {
 		    const tableBody = document.querySelector('#data-table tbody');
 		    const submitBtn = document.getElementById('submit-btn');
@@ -113,6 +121,19 @@
 		    	// フォームを送信
 		    	compareForm.submit();
 		    })
+
+		    /* ========================================================
+			 * 【新規追加】ファイルが選択されたら自動でサーバーに送信する処理
+			 * ======================================================== */
+			const fileInput = document.getElementById('uploadFile');
+			const uploadForm = document.getElementById('upload-form');
+
+			fileInput.addEventListener('change', () => {
+				// ファイルが正しく選択されていればフォームを送信
+				if (fileInput.files.length > 0) {
+					uploadForm.submit();
+				}
+			});
 		});
     </script>
 </body>

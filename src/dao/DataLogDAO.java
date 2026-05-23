@@ -16,9 +16,10 @@ public class DataLogDAO {
 	private final String DB_USER = "sa";
 	private final String DB_PASS = "";
 
+	// 日時一覧を表示
 	public List<DataLog> findAll() {
 	    Connection conn = null;
-	    List<DataLog> dataLogList = new ArrayList<>(); // ダイヤモンド演算子でスッキリ書けます
+	    List<DataLog> dataLogList = new ArrayList<>();
 	    try {
 	        Class.forName(DRIVER_NAME);
 	        conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
@@ -62,18 +63,7 @@ public class DataLogDAO {
 	            // CLOB型を一旦 String として取得する
 	            String clobData = rs.getString("ALLDATA");
 
-	            int allData = 0;
-	            if (clobData != null && !clobData.isEmpty()) {
-	                try {
-	                    // 文字列を数値（int）に変換する
-	                    allData = Integer.parseInt(clobData.trim());
-	                } catch (NumberFormatException e) {
-	                    // ALLDATAの中身が数字以外だった場合のログ
-	                    System.out.println("数値変換エラー: WRDATE=" + wrDate + " のデータは数値ではありません。");
-	                }
-	            }
-
-	            dataLog = new DataLog(wrDate, allData);
+	            dataLog = new DataLog(wrDate, clobData);
 	        }
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,4 +77,41 @@ public class DataLogDAO {
 		}
 		return dataLog;
 	}
+
+	// ファイルから読み込んだデータをDBに保存する
+		public boolean insert(DataLog dataLog) {
+			Connection conn = null;
+			PreparedStatement pStmt = null;
+			boolean result = false;
+
+			try {
+				Class.forName(DRIVER_NAME);
+				conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+
+				// DATA_LOG テーブルに登録日時とデータ内容を挿入するSQL
+				String sql = "INSERT INTO DATA_LOG (WRDATE, ALLDATA) VALUES (?, ?)";
+				pStmt = conn.prepareStatement(sql);
+				pStmt.setString(1, dataLog.getWrDate());
+
+				// 既存の型（int）に合わせてセット
+				pStmt.setString(2, dataLog.getAllData());
+
+				// 実行された行数が1行以上であれば成功
+				int rowsInserted = pStmt.executeUpdate();
+				if (rowsInserted > 0) {
+					result = true;
+				}
+			} catch (SQLException | ClassNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				// クローズ処理
+				try {
+					if (pStmt != null) pStmt.close();
+					if (conn != null) conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
 }
