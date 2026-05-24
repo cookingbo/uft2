@@ -116,6 +116,10 @@
 		        const selectedRows = document.querySelectorAll('#data-table tbody tr.selected');
 		        const selectedCount = selectedRows.length;
 		        submitBtn.disabled = (selectedCount !== 2);
+		        //submitBtn.disabled = false;
+		        //submitBtn.disabled = (selectedCount !== 2);をコメント
+		        //submitBtn.disabled = false;をコメントから外す
+		        //document.getElementById('compare-form').submit();を開発者ツールのコンソールで実行すると強制的にサーバにデータが送られる
 		    });
 
 		    /* ========================================================
@@ -157,6 +161,17 @@
 				}
 			});
 		});
+		/* ========================================================
+		 * 【新規追加】サーバーからのエラーメッセージをポップアップ表示
+		 * ======================================================== */
+		<%
+			// サーバー（Main.java）からエラーメッセージが届いているか確認
+			String errorMsg = (String) request.getAttribute("errorMsg");
+			if (errorMsg != null) {
+		%>
+			// メッセージが存在する場合、ブラウザの標準ダイアログで表示する
+			alert("<%= errorMsg %>");
+		<% } %>
     </script>
 </body>
 </html>
