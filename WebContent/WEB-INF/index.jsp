@@ -44,6 +44,13 @@
 </style>
 </head>
 
+<div id="loading-overlay" class="overlay-hidden">
+    <div class="loading-box">
+        <div class="spinner"></div>
+        <p>処理中です。少々お待ちください...</p>
+    </div>
+</div>
+
 <body>
 	<form id="compare-form" action="/uft2/Main" method="post">
 		<input type="hidden" name="date1" id="hidden-date1">
@@ -96,6 +103,7 @@
 		    const tableBody = document.querySelector('#data-table tbody');
 		    const submitBtn = document.getElementById('submit-btn');
 		    const compareForm = document.getElementById('compare-form');
+		    const loadingOverlay = document.getElementById('loading-overlay');
 
 		    tableBody.addEventListener('click', (event) => {
 		        // クリックされた要素の親にある tr を探す
@@ -110,28 +118,42 @@
 		        submitBtn.disabled = (selectedCount !== 2);
 		    });
 
-		 	// ボタンクリック時の送信処理
-		    submitBtn.addEventListener('click', () => {
-		    	const selectedRows = document.querySelectorAll('#data-table tbody tr.selected');
-
-		    	// 選択された2つの行から日時テキストを取得してhiddenにセット
-		    	document.getElementById('hidden-date1').value = selectedRows[0].innerText.trim();
-		    	document.getElementById('hidden-date2').value = selectedRows[1].innerText.trim();
-
-		    	// フォームを送信
-		    	compareForm.submit();
-		    })
-
 		    /* ========================================================
-			 * 【新規追加】ファイルが選択されたら自動でサーバーに送信する処理
+			 * 1. 比較出力（日時一覧を表示する処理）
+			 * ======================================================== */
+			submitBtn.addEventListener('click', () => {
+				const selectedRows = document.querySelectorAll('#data-table tbody tr.selected');
+				document.getElementById('hidden-date1').value = selectedRows[0].innerText.trim();
+				document.getElementById('hidden-date2').value = selectedRows[1].innerText.trim();
+
+				// 【修正】ダイアログを表示し、コンソールにログを出力
+				console.log("[JSログ] 比較出力ボタンが押されました。ダイアログを表示します。");
+				loadingOverlay.classList.remove('overlay-hidden');
+
+				// 【安心の処理】少しだけ（50ミリ秒）待ってから送信することで、ブラウザにダイアログを描画させます
+				setTimeout(() => {
+					console.log("[JSログ] 比較フォームを送信します。");
+					compareForm.submit();
+				}, 50);
+			});
+
+			/* ========================================================
+			 * 2. ファイル登録処理（アップロード）
 			 * ======================================================== */
 			const fileInput = document.getElementById('uploadFile');
 			const uploadForm = document.getElementById('upload-form');
 
 			fileInput.addEventListener('change', () => {
-				// ファイルが正しく選択されていればフォームを送信
 				if (fileInput.files.length > 0) {
-					uploadForm.submit();
+					// 【修正】ダイアログを表示し、コンソールにログを出力
+					console.log("[JSログ] ファイルが選択されました。ダイアログを表示します。選択ファイル: " + fileInput.files[0].name);
+					loadingOverlay.classList.remove('overlay-hidden');
+
+					// 【安心の処理】少しだけ（50ミリ秒）待ってから送信することで、ブラウザにダイアログを描画させます
+					setTimeout(() => {
+						console.log("[JSログ] ファイルアップロードフォームを送信します。");
+						uploadForm.submit();
+					}, 50);
 				}
 			});
 		});

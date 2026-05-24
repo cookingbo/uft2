@@ -32,10 +32,12 @@ public class FileRegister extends HttpServlet {
 				Part filePart = request.getPart("uploadFile");
 
 				if (filePart != null && filePart.getSize() > 0) {
-					// 拡張子の有無に関わらず、ファイルの中身をテキスト文字列として一括で読み込む
+					// 修正後：明示的に "\n" で結合し、重複した余分な改行を排除する
 					String fileContent;
 					try (BufferedReader reader = new BufferedReader(new InputStreamReader(filePart.getInputStream(), "UTF-8"))) {
-						fileContent = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+					    fileContent = reader.lines()
+					                        .map(line -> line.replace("\r", "")) // 行データに \r が残っていたら完全に消去
+					                        .collect(Collectors.joining("\n"));  // 綺麗な \n だけで行を結合
 					}
 
 					// 現在の日時（String型）を生成

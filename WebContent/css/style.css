@@ -1,5 +1,46 @@
 @charset "UTF-8";
 
+/* --- 処理中ダイアログ（ローディング）用のスタイル --- */
+	/* 画面全体を覆う黒い背景 */
+#loading-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
+	z-index: 9999; /* 一番手前に表示 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/* 非表示状態のクラス */
+.overlay-hidden {
+	display: none !important;
+}
+/* 中央の白いボックス */
+.loading-box {
+	background: white;
+	padding: 30px;
+	border-radius: 8px;
+	text-align: center;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+/* くるくる回るアニメーション部品 */
+.spinner {
+	width: 40px;
+	height: 40px;
+	margin: 0 auto 15px;
+	border: 4px solid #f3f3f3;
+	border-top: 4px solid #333;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
 #data-table tbody tr {
     cursor: pointer; /* マウスを乗せた時に指マークにする */
 }
