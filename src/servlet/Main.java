@@ -46,8 +46,8 @@ public class Main extends HttpServlet {
 	    String date2 = request.getParameter("date2");
 
 	    // 【テスト用：ここを追加】送られてきたデータに関わらず、強制的に不正な形式にする
-	    date1 = "2026/05/24 22:00"; // スラッシュ区切り（不正な形式）
-	    date2 = "あいうえお";         // まったく関係ない文字列（不正な形式）
+	    // date1 = "2026/05/24 22:00"; // スラッシュ区切り（不正な形式）
+	    // date2 = "あいうえお";         // まったく関係ない文字列（不正な形式）
 
 	    System.out.println("[サーバー検証] 受信データ - date1: [" + date1 + "], date2: [" + date2 + "]");
 
